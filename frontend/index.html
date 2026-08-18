@@ -1,0 +1,464 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Phonix.AI — Indian Launch Price Estimator</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body data-theme="light">
+
+<!-- ============================================================ -->
+<!-- BACKGROUND: perspective grid floor + floating phone shapes -->
+<!-- ============================================================ -->
+<div class="bg-scene" aria-hidden="true">
+  <div class="grid-floor"></div>
+  <div class="glow-orb glow-orb-a"></div>
+  <div class="glow-orb glow-orb-b"></div>
+  <div class="float-shape shape-1"></div>
+  <div class="float-shape shape-2"></div>
+  <div class="float-shape shape-3"></div>
+  <div class="float-shape shape-4"></div>
+  <div class="float-dot dot-1"></div>
+  <div class="float-dot dot-2"></div>
+  <div class="float-dot dot-3"></div>
+</div>
+
+<!-- ============================================================ -->
+<!-- HEADER / NAV -->
+<!-- ============================================================ -->
+<header class="site-header">
+  <div class="wrap header-inner">
+    <div class="brand">
+      <span class="brand-mark" aria-hidden="true">
+        <svg viewBox="0 0 32 32" fill="none">
+          <rect x="8" y="3.5" width="16" height="25" rx="4" stroke="currentColor" stroke-width="2.2"/>
+          <path d="M12 20.5l3-3 2.5 2 3.5-5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          <path d="M19 14.5h2v2" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          <circle cx="16" cy="24.5" r="1" fill="currentColor"/>
+        </svg>
+      </span>
+      <span class="brand-name">Phonix<span class="accent">.AI</span></span>
+    </div>
+
+    <nav class="pill-nav" id="pillNav">
+      <a href="#top" class="pill-link active" data-target="top">Home</a>
+      <a href="#predict" class="pill-link" data-target="predict">Predict</a>
+      <a href="#performance" class="pill-link" data-target="performance">Analytics</a>
+    </nav>
+
+    <button class="theme-toggle" id="themeToggle" aria-label="Toggle dark mode">
+      <svg id="iconMoon" class="theme-icon" viewBox="0 0 24 24" fill="none"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79Z" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      <svg id="iconSun" class="theme-icon hidden" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="4.2" stroke="currentColor" stroke-width="1.8"/><path d="M12 2.5v2.4M12 19.1v2.4M4.6 4.6l1.7 1.7M17.7 17.7l1.7 1.7M2.5 12h2.4M19.1 12h2.4M4.6 19.4l1.7-1.7M17.7 6.3l1.7-1.7" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+    </button>
+  </div>
+</header>
+
+<main>
+
+<!-- ============================================================ -->
+<!-- HERO -->
+<!-- ============================================================ -->
+<section class="hero" id="top">
+  <div class="wrap">
+    <span class="badge">AI-Powered Predictions</span>
+    <h1 class="hero-title">
+      Predict Phone<br>
+      Prices <span class="grad-text">With Precision</span>
+    </h1>
+    <p class="hero-lede">
+      A tuned XGBoost regressor trained on real Indian launch data. Enter nine
+      hardware specs — brand, RAM, cameras, battery and more — and get an
+      instant estimated launch price, served live from your FastAPI backend.
+    </p>
+
+    <div class="stat-row">
+      <div class="stat-card glow-card">
+        <p class="stat-value" id="statAccuracy">—</p>
+        <p class="stat-label">Model R² Score</p>
+      </div>
+      <div class="stat-card glow-card">
+        <p class="stat-value" id="statMAE">—</p>
+        <p class="stat-label">Avg. Error (MAE)</p>
+      </div>
+      <div class="stat-card glow-card">
+        <p class="stat-value">9</p>
+        <p class="stat-label">Spec Inputs</p>
+      </div>
+    </div>
+
+    <div class="hero-actions">
+      <a href="#predict" class="btn btn-primary">Start Predicting <span class="arrow">→</span></a>
+      <a href="#performance" class="btn btn-ghost">View Analytics</a>
+    </div>
+
+    <div class="hero-phone-scene" aria-hidden="true">
+      <div class="phone-shadow"></div>
+      <div class="phone-device">
+        <div class="phone-side"></div>
+        <div class="phone-top"></div>
+        <div class="phone-screen">
+          <div class="dynamic-island"></div>
+          <div class="screen-glow"></div>
+          <div class="screen-reflection"></div>
+          <div class="screen-copy">PRICE</div>
+          <div class="screen-chart"><i></i><i></i><i></i><i></i></div>
+        </div>
+        <div class="camera-bump"><b></b><b></b><b></b><em></em></div>
+        <div class="phone-button button-top"></div>
+        <div class="phone-button button-bottom"></div>
+      </div>
+      <div class="phone-orbit orbit-one"></div>
+      <div class="phone-orbit orbit-two"></div>
+      <span class="phone-chip chip-one">XGBoost</span>
+      <span class="phone-chip chip-two">₹</span>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================ -->
+<!-- PREDICTION FORM -->
+<!-- ============================================================ -->
+<section class="predict-section" id="predict">
+  <div class="wrap">
+    <p class="eyebrow">Get an estimate</p>
+    <h2 class="section-title">Describe the device</h2>
+    <p class="section-sub">Every field below is sent straight to the <code>/predict</code> endpoint, matched exactly to the model's training schema.</p>
+
+    <div class="predict-grid">
+      <form id="predictForm" class="spec-form glow-card" novalidate>
+
+        <div class="field">
+          <label for="company_name">Company / Brand</label>
+          <input
+            type="text"
+            id="company_name"
+            name="company_name"
+            list="companyOptions"
+            placeholder="Start typing… e.g. Samsung"
+            autocomplete="off"
+            required
+          >
+          <datalist id="companyOptions"></datalist>
+          <p class="field-warning hidden" id="companyWarning">
+            Not an exact match to a trained brand — the model will treat this as "unknown."
+          </p>
+        </div>
+
+        <div class="field">
+          <label for="processor">Processor</label>
+          <input
+            type="text"
+            id="processor"
+            name="processor"
+            list="processorOptions"
+            placeholder="Start typing… e.g. Snapdragon 8 Gen 3"
+            autocomplete="off"
+            required
+          >
+          <datalist id="processorOptions"></datalist>
+          <p class="field-warning hidden" id="processorWarning">
+            Not an exact match to a trained processor — the model will treat this as "unknown."
+          </p>
+        </div>
+
+        <div class="field">
+          <label for="ram">RAM <span class="unit">GB</span></label>
+          <input type="number" id="ram" name="ram" min="0.1" step="0.1" placeholder="8" required>
+        </div>
+
+        <div class="field">
+          <label for="mobile_weight">Mobile Weight <span class="unit">grams</span></label>
+          <input type="number" id="mobile_weight" name="mobile_weight" min="0.1" step="0.1" placeholder="190" required>
+        </div>
+
+        <div class="field">
+          <label for="front_camera">Front Camera <span class="unit">MP</span></label>
+          <input type="number" id="front_camera" name="front_camera" min="0" step="0.1" placeholder="16" required>
+        </div>
+
+        <div class="field">
+          <label for="back_camera">Back Camera <span class="unit">MP</span></label>
+          <input type="number" id="back_camera" name="back_camera" min="0" step="0.1" placeholder="50" required>
+        </div>
+
+        <div class="field">
+          <label for="battery_capacity">Battery Capacity <span class="unit">mAh</span></label>
+          <input type="number" id="battery_capacity" name="battery_capacity" min="0.1" step="1" placeholder="5000" required>
+        </div>
+
+        <div class="field">
+          <label for="screen_size">Screen Size <span class="unit">inches</span></label>
+          <input type="number" id="screen_size" name="screen_size" min="0.1" step="0.1" placeholder="6.5" required>
+        </div>
+
+        <div class="field">
+          <label for="launched_year">Launched Year</label>
+          <input type="number" id="launched_year" name="launched_year" min="2000" max="2100" step="1" placeholder="2025" required>
+        </div>
+
+        <div class="field field-submit">
+          <button type="submit" class="btn btn-primary btn-block" id="submitBtn">
+            <span id="submitBtnText">Predict launch price</span>
+          </button>
+          <p class="disclaimer">
+            Model-generated estimate, not an official or exact market price.
+          </p>
+        </div>
+      </form>
+
+      <div class="result-panel glow-card">
+        <div class="result-state" id="stateIdle">
+          <div class="result-icon">◈</div>
+          <p>Fill in the spec sheet and run a prediction to see the estimated launch price here.</p>
+        </div>
+
+        <div class="result-state hidden" id="stateLoading">
+          <div class="spinner"></div>
+          <p>Running inference on the XGBoost model…</p>
+        </div>
+
+        <div class="result-state hidden" id="stateError">
+          <div class="result-icon error-icon">!</div>
+          <p id="errorMessage">Something went wrong.</p>
+          <button class="btn btn-ghost btn-small" id="retryBtn">Try again</button>
+        </div>
+
+        <div class="result-state hidden" id="stateSuccess">
+          <p class="result-label">Estimated Launch Price (India)</p>
+          <p class="result-price grad-text" id="resultPrice">₹0</p>
+          <p class="result-note" id="resultMessage">Estimated Indian launch price</p>
+
+          <div class="plausibility-warning hidden" id="plausibilityWarning">
+            <span class="plausibility-icon">⚠</span>
+            <span>Some values are outside the usual smartphone range. Check the specifications before relying on this estimate.</span>
+          </div>
+
+          <div class="phone-match-status hidden" id="phoneMatchStatus" aria-live="polite">
+            <span class="phone-match-icon" id="phoneMatchIcon">⌕</span>
+            <span id="phoneMatchText"></span>
+          </div>
+
+          <div class="range-block">
+            <p class="range-label">Approximate estimate range</p>
+            <p class="range-value" id="rangeValue">₹— – ₹—</p>
+            <p class="range-hint">
+              Based on the model's average error (MAE = <span id="rangeMae">₹6,852.60</span>). This is an
+              approximate spread, not a statistical confidence interval.
+            </p>
+          </div>
+
+          <div class="result-chart-wrap">
+            <p class="chart-caption">Your submitted spec profile</p>
+            <div class="chart-canvas-box chart-canvas-box-radar">
+              <canvas id="specRadarChart"></canvas>
+            </div>
+            <p class="chart-explainer">
+              Each axis is scaled to 0–100% of a typical smartphone's range for that spec, so a
+              4500&nbsp;mAh battery and a 190g body sit on the same visual footing — hover any point
+              for the real value.
+            </p>
+          </div>
+
+          <div class="explain-wrap" id="explainWrap">
+            <p class="chart-caption">Why this prediction?</p>
+
+            <div class="explain-loading" id="explainLoading">
+              <div class="spinner spinner-small"></div>
+              <span>Computing feature contributions…</span>
+            </div>
+
+            <div class="explain-unavailable hidden" id="explainUnavailable">
+              Feature-contribution breakdown isn't available right now — the backend's
+              <code>/explain</code> endpoint didn't respond. The price prediction above is unaffected.
+            </div>
+
+            <div class="chart-canvas-box chart-canvas-box-wide hidden" id="explainChartBox">
+              <canvas id="explainChart"></canvas>
+            </div>
+            <p class="chart-explainer hidden" id="explainExplainerText">
+              Bars pushing right increased the predicted price; bars pushing left decreased it. Longer
+              bars mean that spec mattered more for this specific prediction, computed via SHAP on the
+              trained XGBoost model.
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================ -->
+<!-- MODEL ANALYTICS -->
+<!-- ============================================================ -->
+<section class="performance-section" id="performance">
+  <div class="wrap">
+    <p class="eyebrow">Model insight</p>
+    <h2 class="section-title">Market <span class="grad-text">Analytics</span></h2>
+    <p class="section-sub">Live metrics from the <code>/model-info</code> endpoint, measured on held-out launch data.</p>
+
+    <div class="chart-grid">
+      <div class="chart-card glow-card">
+        <p class="chart-card-title">Error Magnitude (₹)</p>
+        <div class="chart-canvas-box chart-canvas-box-wide">
+          <canvas id="errorBarChart"></canvas>
+        </div>
+        <p class="chart-explainer">
+          On average, the model's estimate lands within about
+          <strong id="maeInline">—</strong> of the true launch price (MAE). RMSE is a bit higher
+          because it weighs big misses more heavily than small ones — a wider gap between the two
+          bars means the model occasionally misses by a lot on a few phones.
+        </p>
+      </div>
+
+      <div class="chart-card glow-card chart-card-center">
+        <p class="chart-card-title">R² Score</p>
+        <div class="r2-gauge">
+          <canvas id="r2Chart" width="160" height="160"></canvas>
+          <span class="r2-gauge-value" id="r2GaugeValue">—</span>
+        </div>
+        <p class="chart-explainer">
+          R² tells you how much of the price difference between phones the model can actually
+          explain from their specs. <strong id="r2Inline">—</strong> means it's a strong predictor,
+          though real-world pricing (brand premium, promotions, taxes) still adds noise it can't see.
+        </p>
+      </div>
+    </div>
+
+    <div class="chart-card glow-card chart-card-history">
+      <div class="chart-card-history-head">
+        <p class="chart-card-title">Your Prediction History</p>
+        <button class="btn btn-ghost btn-small" id="clearHistoryBtn" type="button">Clear</button>
+      </div>
+      <div class="chart-canvas-box chart-canvas-box-wide" id="historyChartBox">
+        <canvas id="priceHistoryChart"></canvas>
+      </div>
+      <p class="result-state-empty" id="historyEmptyState">
+        Run a few predictions with different launch years above and they'll plot here — this is
+        your own predicted prices by year, not a market history chart.
+      </p>
+      <p class="chart-explainer hidden" id="historyExplainer">
+        Each point is a price this model predicted for a device you entered, plotted against the
+        launch year you gave it. This shows how <em>your</em> submitted specs trend across years —
+        it isn't historical market data, since none was provided by the API.
+      </p>
+    </div>
+
+    <div class="dataset-needed-grid">
+      <div class="chart-card glow-card">
+        <p class="chart-card-title">Historical Price Trends by Year</p>
+        <div class="chart-canvas-box chart-canvas-box-wide" id="trendChartBox">
+          <canvas id="priceTrendChart"></canvas>
+        </div>
+        <p class="chart-explainer hidden" id="trendExplainer">
+          Average Indian launch price of every phone in the training dataset, grouped by year.
+          Early years (2014–2017) are based on very few phones, so treat those points as less
+          reliable than 2021 onward.
+        </p>
+        <p class="result-state-empty hidden" id="trendUnavailable">
+          Dataset not loaded on the server — this chart needs
+          <code>backend/data/phones_dataset.csv</code> and the new <code>/price-trends</code> endpoint.
+        </p>
+      </div>
+
+      <div class="chart-card glow-card">
+        <p class="chart-card-title">Dataset Price Comparison</p>
+        <p class="chart-card-subtitle">Choose a launched phone from the dataset to compare its recorded Indian launch price with the model estimate.</p>
+
+        <div class="validate-row">
+          <select id="validatePhoneInput" disabled aria-label="Choose a phone from the dataset">
+            <option value="">Loading phones from the dataset…</option>
+          </select>
+          <button class="btn btn-primary btn-small" id="validateBtn" type="button" disabled>Compare</button>
+        </div>
+        <p class="result-state-empty hidden" id="validateUnavailable">
+          Dataset not loaded on the server — this needs
+          <code>backend/data/phones_dataset.csv</code> and the new <code>/phones</code> endpoint.
+        </p>
+
+        <div class="validate-result hidden" id="validateResult">
+          <div class="validate-stat-row">
+            <div class="validate-stat">
+              <p class="validate-stat-label">Actual</p>
+              <p class="validate-stat-value" id="validateActual">—</p>
+            </div>
+            <div class="validate-stat">
+              <p class="validate-stat-label">Predicted</p>
+              <p class="validate-stat-value grad-text" id="validatePredicted">—</p>
+            </div>
+            <div class="validate-stat">
+              <p class="validate-stat-label">Abs. Error</p>
+              <p class="validate-stat-value" id="validateAbsError">—</p>
+            </div>
+            <div class="validate-stat">
+              <p class="validate-stat-label">% Error</p>
+              <p class="validate-stat-value" id="validatePctError">—</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="chart-canvas-box chart-canvas-box-wide hidden" id="validateChartBox">
+          <canvas id="validateChart"></canvas>
+        </div>
+        <p class="chart-explainer hidden" id="validateExplainer">
+          The bars compare this dataset record's actual launch price with the model estimate for
+          the same inputs. Because this phone comes from the model dataset, use it as an
+          illustrative comparison rather than an independent accuracy test.
+        </p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================ -->
+<!-- PIPELINE / HOW IT WORKS -->
+<!-- ============================================================ -->
+<section class="pipeline-section" id="pipeline">
+  <div class="wrap">
+    <p class="eyebrow">Under the hood</p>
+    <h2 class="section-title">From spec sheet to price</h2>
+
+    <div class="pipeline-track">
+      <div class="pipeline-step glow-card">
+        <span class="pipeline-index">01</span>
+        <h3>Raw specs</h3>
+        <p>Nine fields — brand, weight, RAM, cameras, processor, battery, screen size, and launch year.</p>
+      </div>
+      <div class="pipeline-step glow-card">
+        <span class="pipeline-index">02</span>
+        <h3>Preprocessing</h3>
+        <p>A scikit-learn <code>ColumnTransformer</code> scales numeric fields and encodes brand and processor.</p>
+      </div>
+      <div class="pipeline-step glow-card">
+        <span class="pipeline-index">03</span>
+        <h3>XGBoost inference</h3>
+        <p>The transformed vector is passed to a tuned XGBoost <code>Booster</code>, loaded natively.</p>
+      </div>
+      <div class="pipeline-step glow-card">
+        <span class="pipeline-index">04</span>
+        <h3>Price estimate</h3>
+        <p>The model outputs a single regression value: the estimated launch price, in ₹.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<!-- ============================================================ -->
+<!-- FOOTER -->
+<!-- ============================================================ -->
+<footer class="site-footer">
+  <div class="wrap footer-inner">
+    <p>Phonix AI · Estimates are model outputs, not official pricing.</p>
+  </div>
+</footer>
+
+<!-- <script src="assets/vendor/chart.umd.js"></script> -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.4/dist/chart.umd.min.js"></script>
+<script src="script.js"></script>
+</body>
+</html>
