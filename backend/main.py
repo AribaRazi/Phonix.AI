@@ -28,7 +28,7 @@ app = FastAPI(
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["https://phonix-ai-gamma.vercel.app/"],  # Change this in production
+    allow_origins=["https://phonix-ai-gamma.vercel.app"],  # Change this in production
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
